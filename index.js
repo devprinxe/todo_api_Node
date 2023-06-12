@@ -10,20 +10,20 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "../client/public/upload");
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + file.originalname);
-  },
-});
 
-const upload = multer({ storage });
+
+const upload = multer({ dest: 'client/' });
 
 app.post("/api/upload", upload.single("file"), function (req, res) {
-  const file = req.file;
-  res.status(200).json(file.filename);
+  if (req.fileValidationError) {
+    // Print the error message
+    console.error(req.fileValidationError);
+    // Return an error response to the client
+    return res.status(400).json({ error: req.fileValidationError });
+  }
+  
+  // File upload succeeded
+  res.json({ message: 'File uploaded successfully' });
 });
 
 app.use("/api/auth", authRoutes);
