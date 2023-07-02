@@ -57,6 +57,7 @@ const swaggerOptions = {
       description: 'API documentation using Swagger',
       version: '1.0.0',
     },
+    apis: ['./routes/*.js'],
   },
   // Specify the path to your API routes
   apis: ['routes/*.js'],
